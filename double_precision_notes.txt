@@ -1,0 +1,75 @@
+
+Double precision floating point number
+Conversion to string
+
+* 64 bits
+
+* 1 sign bit, 11 exponent bits, 52 mantissa bits
+
+* exponent is 1023 biased
+
+* ranges from -1022 to 1023
+
+* zero is represented as:
+    00 00 00 00 00 00 00 00 = 0.0
+   or
+    80 00 00 00 00 00 00 00 = -0.0
+
+for normal numbers;
+    divide into two parts:
+        integer:
+            * irrelevant for e < 0
+            if e >= 0 and e < 64:
+                copy 64 bits into a qword integer and convert to string
+            if e >= 64:
+                * will have to be represented with scientific notation
+                * note that in this range, the fraction part is irrelevant
+                n x 2^e | n = 1.mantissa, e = exponent
+                * 2^e must be converted to 10^f
+                * solution must remain in 64 bits
+                    * invalid solutions:
+                        * simplify the entire equation. then convert it to base 10 scientific notation.
+                            * invalid because it defeats the purpose of trying to represent in scientific notation.
+                            * it would require countless bits
+                        * simplify the 2^e and convert it to 10^f
+                            * invalid because 2^x where x > 64 would require more than 64 bits
+                    * potentially valid solution:
+                        * convert it algebraically
+                            * Step 1: find the exponent, y
+                                * 2^x = 10^y
+                                * log 2^x = log 10^y
+                                * x log 2 = y log 10
+                                * x (log 2) / (log 10) = y
+                                * y = 0.301029996x
+                                * e.g. 2^9 -> 10^2.709269964
+                            * Step 2: make y an integer and find the excess, r 
+                                * r = y - floor(y)
+                                * y = floor(y)
+                            * Step 3: compute a new n and a new y
+                                * n = n * 10^r
+                                    * 10^r will be > 1 and < 10
+                                * if n >= 10, then 
+                                    * y++
+                            * Step 4: print negative sign if applicable
+                            * Step 5: print part of number before the decimal and the decimal
+                                * if n >= 10, then
+                                    * move the part of the number before the decimal to an integer
+                                    * divide that integer by 10
+                                    * print the result + '.' + remainder
+                                * else
+                                    * move the part of the number before the decimal to an integer
+                                    * print the number + '.'
+                            * Step 6: print the number after the decimal
+                                * subtract the part before the decimal from the number
+                                * until number == 0,
+                                    * multiply the number by 10
+                                    * print the digit before the decimal
+                                    * subtract the digit from the number
+                            * Step 7: print the exponent
+                                * print 'e'
+                                * print y
+
+                
+        fraction:
+            * irrelevant for e >= 52
+            * if 
