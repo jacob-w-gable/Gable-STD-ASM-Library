@@ -1,6 +1,5 @@
-# Gable-STD-ASM-Library
-## Standard Library for Intel 64-bit Assembly
-This library provides some basic macros that can be used when writing 64-bit Intel Assembly. These macros deal with I/O as well as type conversions.
+# Standard Library for Intel 64-bit Assembly
+This library provides some basic macros that can be used when writing 64-bit Intel Assembly. These macros deal with I/O as well as type conversions. The files to look at are `includes.asm` (the main project file) and `test.asm` (the file used to demo the library).
 ## Macros
 - exit \<code\>
   - Exits the program
